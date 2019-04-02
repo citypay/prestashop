@@ -1,0 +1,19 @@
+{
+  "name": "citypay/prestashop",
+  "description": "PrestaShop module citypaypaylink",
+  "homepage": "https://citypay.com",
+  "license": "AFL - Academic Free License (AFL 3.0)",
+  "authors": [
+    {
+      "name": "CityPay Limited",
+      "email": "support@citypay.com"
+    }
+  ],
+  "require": {
+    "php": ">=5.4.1"
+  },
+  "config": {
+    "preferred-install": "dist"
+  },
+  "type": "prestashop-module"
+}
