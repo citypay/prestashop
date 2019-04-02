@@ -1,4 +1,4 @@
-![CityPay](citypay-logo.png)
+![CityPay](https://citypay.com/static/img/logo-x500.png)
 
 ## Payment Module for PrestaShop
 
@@ -17,9 +17,10 @@ PrestaShop | 1.7.0.0 - latest
 
 Safety Measure: Please make a backup of your website before installing any 3rd party module on your Prestashop site.
 
-*   Download the payment module .zip file to your computer.
+*   Download the payment module .zip file in the **dist** folder to your computer.
+*   **RENAME** the .zip file to ***citypaypaylink.zip*** (remove the "-Version")
 *   Login to your PrestaShop Back Office.
-*   Go to "Modules -> Module Manager" in the menu, and upload the .zip file using the "Upload a module" button.
+*   Go to "Modules -> Module Manager" in the menu, and upload the ***citypaypaylink.zip*** file using the "Upload a module" button.
 
 
 ### Configuring the module

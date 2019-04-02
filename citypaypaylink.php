@@ -1,8 +1,12 @@
 <?php
-/*
-*  @author CityPay <support@citypay.com>
-*  @copyright  2019 CityPay Limited
-*/
+/**
+ * Plugin Name: CityPay PayLink PrestaShop
+ * Plugin URI: http://citypay.com/paylink
+ * Description: Allow Credit/Debit Card payments to be processed through CityPay Payment Gateway - Paylink.
+ * Version: 1.0.0
+ * Author: CityPay Limited
+ * Author URI: http://citypay.com
+ */
 
 use PrestaShop\PrestaShop\Core\Payment\PaymentOption;
 
