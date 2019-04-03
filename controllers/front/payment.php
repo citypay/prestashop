@@ -88,36 +88,16 @@ class CitypayPaylinkPaymentModuleFrontController extends ModuleFrontController
             ),
             'config' => array(
                 'redirect_success' => Context::getContext()->shop->getBaseURL(true).'index.php?controller=order-detail&id_order='.$order_id,
-                'redirect_failure' => Context::getContext()->shop->getBaseURL(true),
+                'redirect_failure' => Context::getContext()->shop->getBaseURL(true).'index.php?controller=order-detail&id_order='.$order_id,
                 'postback' => Context::getContext()->shop->getBaseURL(true).'?fc=module&module=citypaypaylink&controller=postback',
                 'postback_policy' => 'sync',
                 'return_params' => true,
-                'customParams' => array(
-                    0 => array (
-                            'name' => 'securekey',
-                            'value' => $secure_key,
-                            'locked' => true,
-                        ),
-                    1 => array (
-                            'name' => 'cartid',
-                            'value' => $cart_id,
-                            'locked' => true,
-                        ),
-                    2 => array (
-                        'name' => 'ordertotal',
-                        'value' => $this->context->cart->getOrderTotal(true),
-                        'locked' => true,
-                    ),
-                    3 => array (
-                        'name' => 'displayname',
-                        'value' => $this->module->displayName,
-                        'locked' => true,
-                    ),
-                    4 => array (
-                        'name' => 'orderid',
-                        'value' => (int)Order::getIdByCartId((int)$cart_id),
-                        'locked' => true,
-                    ),
+                'passThroughData' => array(
+                    'securekey' => $secure_key,
+                    'cartid' => $cart_id,
+                    'ordertotal' => $this->context->cart->getOrderTotal(true),
+                    'displayname' => $this->module->displayName,
+                    'orderid' => (int)Order::getIdByCartId((int)$cart_id)
                 ),
             )
 

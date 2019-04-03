@@ -45,25 +45,26 @@ class CitypayPaylinkPostbackModuleFrontController extends ModuleFrontController
             }
         }
 
-        if (isset($data["authorised"]) && isset($data["mode"]) && isset($data["errorid"]) && isset($data["orderid"]) && $digestValid) {
+        if (isset($data["authorised"]) && isset($data["mode"]) && isset($data["errorid"]) && isset($data['passThroughData']['orderid']) && $digestValid) {
 
-            $order = new Order ((int)$data['orderid']);
+            $order = new Order ((int)$data['passThroughData']['orderid']);
 
-            if ($data["mode"] === "test") {
-                $order->setCurrentState(Configuration::get('PS_OS_CITYPAY_TEST'));
-                $order->save();
-            } else {
-                if ($data["authorised"] === "true") {
-                    $order->setCurrentState(Configuration::get('PS_OS_CITYPAY_COMPLETED'));
-                    $order->save();
-                } else if ($data["errorid"] !== "080") {
-                    $order->setCurrentState(Configuration::get('PS_OS_CITYPAY_FAILED'));
+            if ($data["authorised"] === "true") {
+                if ($data["mode"] === "test") {
+                    $order->setCurrentState(Configuration::get('PS_OS_CITYPAY_TEST'));
                     $order->save();
                 } else {
-                    $order->setCurrentState(Configuration::get('PS_OS_CITYPAY_CANCELED'));
+                    $order->setCurrentState(Configuration::get('PS_OS_CITYPAY_COMPLETED'));
                     $order->save();
                 }
+            } else if ($data["errorid"] !== "080") {
+                $order->setCurrentState(Configuration::get('PS_OS_CITYPAY_FAILED'));
+                $order->save();
+            } else {
+                $order->setCurrentState(Configuration::get('PS_OS_CITYPAY_CANCELED'));
+                $order->save();
             }
+
         }
 
         // exiting because prestashop is expecting a template parameter
