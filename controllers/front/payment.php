@@ -14,18 +14,6 @@ class CitypayPaylinkPaymentModuleFrontController extends ModuleFrontController
     {
         // Call parent init content method
         parent::initContent();
-
-//        $cart = $this->context->cart;
-//
-//        $this->context->smarty->assign(array(
-//            'nbProducts' => $cart->nbProducts(),
-//            'cust_currency' => $cart->id_currency,
-//            'currencies' => $this->module->getCurrency((int)$cart->id_currency),
-//            'total' => $cart->getOrderTotal(true, Cart::BOTH),
-//            'this_path' => $this->module->getPathUri(),
-//            'this_path_bw' => $this->module->getPathUri(),
-//            'this_path_ssl' => Tools::getShopDomainSsl(true, true).__PS_BASE_URI__.'modules/'.$this->module->name.'/'
-//        ));
     }
 
     public function postProcess()
@@ -109,40 +97,32 @@ class CitypayPaylinkPaymentModuleFrontController extends ModuleFrontController
         curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($postData));
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
-
         $result = curl_exec($ch);
 
         curl_close($ch);
         $data = json_decode($result, true);
 
-        print_r($data);
+//        print_r($data);
 
+        // check token request
         if ($data['result']==1){
             $this->context->smarty->assign([
                 'params' => $_REQUEST,
                 'tokenUrl' => $data['url'],
             ]);
+            //redirect user to paylink payment form
+            Tools::redirect($data['url']);
+        } else {
+            //todo redirect to payment request failure page
+            $this->context->smarty->assign([
+                'errors' => $data['errors'],
+            ]);
+            $this->setTemplate('module:citypaypaylink/views/templates/front/payment_req_fail.tpl');
+            $order->setCurrentState(Configuration::get('PS_OS_CITYPAY_FAILED'));
+            $order->save();
         }
 
 
-//        $this->setTemplate('payment_return.tpl');
-//        $this->setTemplate('module:citypaypaylink/views/templates/front/return.tpl');
-//        $this->module->validateOrder($cart->id, Configuration::get('PS_OS_BANKWIRE'), $data['amount'], $this->module->displayName, NULL, NULL, $data['currency'], false, $secure_key);
-        Tools::redirect($data['url']);
-
-//        if ($data['authorised'] == true ){
-//            $this->module->validateOrder($cart->id, Configuration::get('PS_OS_BANKWIRE'), $data['amount'], $this->module->displayName, NULL, NULL, $data['currency'], false, $secure_key);
-////            Tools::redirect('index.php?controller=order-confirmation&id_cart='.$cart->id.'&id_module='.$this->module->id.'&id_order='.$this->module->currentOrder.'&key='.$secure_key);
-//        }
-
-//        $cart_id = $this->context->cart->id;
-//        $module_id = $this->module->id;
-//        $order_id = Order::getOrderByCartId((int)$cart_id);
-//        $secure_key = Context::getContext()->customer->secure_key;
-
-//        echo $cart_id;
-
-//        Tools::redirect('index.php?controller=order-confirmation&id_cart='.$cart_id.'&id_module='.$module_id.'&id_order='.$order_id.'&key='.$secure_key);
     }
 }
 
