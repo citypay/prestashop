@@ -113,7 +113,6 @@ class CitypayPaylinkPaymentModuleFrontController extends ModuleFrontController
             //redirect user to paylink payment form
             Tools::redirect($data['url']);
         } else {
-            //todo redirect to payment request failure page
             $this->context->smarty->assign([
                 'errors' => $data['errors'],
             ]);
